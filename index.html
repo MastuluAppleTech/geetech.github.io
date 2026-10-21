@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geetech ZA | Premium iPhones & Expert Device Unlocking South Africa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#080c14',
+                        cardBg: '#111827',
+                        borderCol: '#1f293d',
+                        electricBlue: '#2563eb',
+                        cyanAccent: '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f1f5f9;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-blue {
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="bg-[#080c14] text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Cart & Service Booking Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity opacity-0"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="cart-panel" class="w-screen max-w-md bg-[#0b1326] border-l border-slate-800 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
+                <!-- Header -->
+                <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-cyan-400"></i>
+                        <h2 class="text-lg font-bold text-white">Cart & Inquiries (<span id="cart-count-header">0</span>)</h2>
+                    </div>
+                    <button id="close-cart" class="text-slate-400 hover:text-white p-2 rounded-lg transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <!-- Items list -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-slate-800/60">
+                    <!-- Dynamic Items -->
+                </div>
+                <!-- Footer -->
+                <div class="p-6 border-t border-slate-800 bg-[#080c14]">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-slate-400 font-medium">Total Amount (ZAR):</span>
+                        <span id="cart-subtotal" class="text-xl font-extrabold text-cyan-400">R 0.00</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-cyan-400"></i> 6-Month Warranty on iPhones & Guaranteed Unlocking.
+                    </p>
+                    <button onclick="checkoutCart()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock text-sm"></i> Proceed to Secure Checkout / Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-mobile-screen-button text-white text-lg"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-wider text-white">GEETECH <span class="text-cyan-400">ZA</span></span>
+                    <span class="text-[10px] tracking-widest uppercase text-blue-400 font-semibold -mt-1">iPhone Specialists & Unlocking</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-300">
+                <a href="#home" class="hover:text-cyan-400 transition-colors">Home</a>
+                <a href="#store" onclick="switchTab('store')" class="hover:text-cyan-400 transition-colors">Shop iPhones</a>
+                <a href="#unlocking" onclick="switchTab('unlocking')" class="hover:text-cyan-400 transition-colors">Unlocking Services</a>
+                <a href="#reviews" class="hover:text-cyan-400 transition-colors">Client Reviews</a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+            </nav>
+
+            <!-- Actions: Currency & Cart -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-1.5 bg-slate-900/80 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-300 font-medium">
+                    <span class="text-cyan-400 font-bold">ZAR (R)</span>
+                </div>
+
+                <!-- Cart Button -->
+                <button id="open-cart" class="relative p-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl hover:border-cyan-500/50 text-slate-300 hover:text-cyan-400 transition-all">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-blue-600 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center shadow-md scale-0 transition-transform">0</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 border-t border-slate-800 bg-[#080c14]/95 backdrop-blur-xl">
+            <div class="flex flex-col space-y-3 font-medium text-slate-300">
+                <a href="#home" class="p-2 hover:bg-slate-800/50 rounded-lg">Home</a>
+                <a href="#store" onclick="switchTab('store')" class="p-2 hover:bg-slate-800/50 rounded-lg">Shop iPhones</a>
+                <a href="#unlocking" onclick="switchTab('unlocking')" class="p-2 hover:bg-slate-800/50 rounded-lg">Unlocking Services</a>
+                <a href="#reviews" class="p-2 hover:bg-slate-800/50 rounded-lg">Client Reviews</a>
+                <a href="#contact" class="p-2 hover:bg-slate-800/50 rounded-lg">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative overflow-hidden pt-16 pb-24 lg:pt-28 lg:pb-32">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[150px] pointer-events-none rounded-full"></div>
+        <div class="absolute top-1/2 right-10 w-[400px] h-[400px] bg-cyan-500/10 blur-[150px] pointer-events-none rounded-full"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/10 border border-blue-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+                        <i class="fa-solid fa-shield-check text-blue-400"></i> South Africa's Trusted iPhone Experts
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                        Geetech ZA: <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Premium iPhones</span> & Expert Unlocking
+                    </h1>
+                    
+                    <p class="text-slate-400 text-lg sm:text-xl font-normal max-w-2xl mx-auto lg:mx-0">
+                        Shop pristine new and certified pre-owned iPhones (13 to 16 Pro Max) with local warranties. Locked to a foreign carrier or iCloud restricted? Get instant professional IMEI & network unlocks.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#store" onclick="switchTab('store')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold rounded-xl shadow-lg shadow-blue-600/25 transition-all text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-mobile-screen"></i> Shop iPhones Now
+                        </a>
+                        <a href="#unlocking" onclick="switchTab('unlocking')" class="w-full sm:w-auto px-8 py-4 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-white font-bold rounded-xl transition-all text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-unlock-keyhole text-cyan-400"></i> Unlocking Services
+                        </a>
+                    </div>
+
+                    <!-- Trust indicators -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-xs font-bold text-white">SA Courier</h4>
+                                <p class="text-[11px] text-slate-400">Next-day delivery</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 flex-shrink-0">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-xs font-bold text-white">Grade A+ Stock</h4>
+                                <p class="text-[11px] text-slate-400">Tested & certified</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-xs font-bold text-white">Express Unlock</h4>
+                                <p class="text-[11px] text-slate-400">Permanent factory</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Feature Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                        
+                        <div class="relative glass-panel rounded-2xl p-6 sm:p-8 border border-slate-700/60 shadow-2xl space-y-6">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="px-2.5 py-1 bg-cyan-500/20 text-cyan-400 text-[10px] font-bold rounded-md uppercase tracking-wider">Featured Flagship</span>
+                                    <h3 class="text-2xl font-extrabold text-white mt-2">iPhone 16 Pro Max</h3>
+                                </div>
+                                <span class="text-2xl font-extrabold text-cyan-400">R 26,999</span>
+                            </div>
+                            
+                            <div class="w-full h-48 bg-slate-950/80 rounded-xl border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                                <i class="fa-brands fa-apple text-cyan-400 text-6xl mb-3 group-hover:scale-110 transition-transform duration-300"></i>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900/90 px-3 py-1 rounded-full border border-slate-700">256GB / Unlocked / Grade A+</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-xs text-slate-300">
+                                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-battery-full text-emerald-400"></i>
+                                    <span>Battery Health: 100%</span>
+                                </div>
+                                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-unlock text-cyan-400"></i>
+                                    <span>Factory Carrier Unlocked</span>
+                                </div>
+                            </div>
+
+                            <button onclick="addToCart('iPhone 16 Pro Max 256GB (Grade A+)', 26999, 'iPhone Retail')" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl transition-all shadow-md shadow-blue-600/30 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i> Quick Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Navigation Tabs (Store vs Unlocking Services) -->
+    <section class="border-y border-slate-800 bg-[#060912] py-4 sticky top-20 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
+            <div class="inline-flex p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl gap-2">
+                <button onclick="switchTab('store')" id="tab-btn-store" class="px-6 py-3 text-sm font-extrabold rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-shop"></i> Shop iPhones
+                </button>
+                <button onclick="switchTab('unlocking')" id="tab-btn-unlocking" class="px-6 py-3 text-sm font-extrabold rounded-xl text-slate-300 hover:text-white transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-unlock-keyhole"></i> iPhone Unlocking Services
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 1: SHOP IPHONES SECTION -->
+    <div id="tab-store" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div>
+                    <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Certified Apple Inventory</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Available iPhone Models</h2>
+                </div>
+
+                <!-- Model Filter Buttons -->
+                <div class="flex flex-wrap gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+                    <button onclick="filterStore('All')" id="btn-model-All" class="model-btn px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition-all">All Models</button>
+                    <button onclick="filterStore('iPhone 16')" id="btn-model-iPhone 16" class="model-btn px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">iPhone 16 Series</button>
+                    <button onclick="filterStore('iPhone 15')" id="btn-model-iPhone 15" class="model-btn px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">iPhone 15 Series</button>
+                    <button onclick="filterStore('iPhone 14')" id="btn-model-iPhone 14" class="model-btn px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">iPhone 14 Series</button>
+                    <button onclick="filterStore('iPhone 13')" id="btn-model-iPhone 13" class="model-btn px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">iPhone 13 Series</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="iphone-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamically populated iPhones -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: UNLOCKING SERVICES SECTION -->
+    <div id="tab-unlocking" class="py-16 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Professional Device Unlocking</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Carrier Unlocks & iCloud Status Checks</h2>
+                <p class="text-slate-400 text-sm mt-3">
+                    Is your iPhone locked to AT&T, Verizon, Vodafone, EE, or locked by Activation Lock? We provide safe, permanent factory unlocking services with 100% success rate.
+                </p>
+            </div>
+
+            <!-- Service Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                
+                <!-- Service 1 -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Carrier / Network Unlock</h3>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Permanent IMEI factory unlock for any global carrier. Use MTN, Vodacom, Telkom, or Cell C seamlessly.</p>
+                        <div class="mt-4 space-y-2 text-xs text-slate-300">
+                            <div class="flex justify-between py-1 border-b border-slate-800">
+                                <span class="text-slate-400">Processing Time:</span>
+                                <span class="font-bold text-white">1 - 24 Hours</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-400">Starting Price:</span>
+                                <span class="font-bold text-cyan-400">R 450</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="bookService('Carrier / Network Unlock', 450)" class="mt-6 w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i> Request Unlock Quote
+                    </button>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between shadow-xl relative">
+                    <span class="absolute -top-3 right-6 px-2.5 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full uppercase">Most Requested</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">iCloud & Activation Assistance</h3>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Professional ownership verification support, clean status audits, and activation lock guidance.</p>
+                        <div class="mt-4 space-y-2 text-xs text-slate-300">
+                            <div class="flex justify-between py-1 border-b border-slate-800">
+                                <span class="text-slate-400">Turnaround:</span>
+                                <span class="font-bold text-white">Same Day</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-400">Starting Price:</span>
+                                <span class="font-bold text-cyan-400">R 650</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="bookService('iCloud & Activation Assistance', 650)" class="mt-6 w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i> Request Unlock Quote
+                    </button>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Full IMEI & Carrier Blacklist Audit</h3>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Instant comprehensive report check for blacklist, lost/stolen status, warranty standing, and original carrier.</p>
+                        <div class="mt-4 space-y-2 text-xs text-slate-300">
+                            <div class="flex justify-between py-1 border-b border-slate-800">
+                                <span class="text-slate-400">Speed:</span>
+                                <span class="font-bold text-white">Instant (Automated)</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-400">Price:</span>
+                                <span class="font-bold text-cyan-400">R 150</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="bookService('Full IMEI Audit Report', 150)" class="mt-6 w-full py-3 bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i> Order Instant Audit
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Unlock Booking Form -->
+            <div class="glass-panel rounded-3xl p-8 sm:p-10 border border-slate-700/60 shadow-2xl max-w-2xl mx-auto">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-white">Submit Your Device Details for Unlocking</h3>
+                    <p class="text-xs text-slate-400 mt-1">Our technician will analyze your IMEI and respond with a secure quote.</p>
+                </div>
+                <form onsubmit="handleUnlockSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Your Name</label>
+                            <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. Sipho Dlamini">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Contact Phone / WhatsApp</label>
+                            <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="082 123 4567">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">iPhone Model</label>
+                            <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. iPhone 14 Pro">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Locked Carrier / Issue</label>
+                            <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. AT&T USA / iCloud">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Device IMEI Number (Dial *#06#)</label>
+                        <input type="text" required maxlength="15" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white font-mono focus:outline-none focus:border-cyan-400" placeholder="35892104xxxxxxx">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold rounded-xl shadow-lg shadow-blue-600/30 text-sm transition-all">
+                        Submit Unlock Request
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Client Reviews Section -->
+    <section id="reviews" class="py-20 bg-[#060912]/80 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Trusted Nationwide</span>
+                <h2 class="text-3xl font-extrabold text-white mt-1">What South African Clients Say</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/60 space-y-4">
+                    <div class="flex text-amber-400 text-sm gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">"Bought an iPhone 15 Pro grade A+ from Geetech ZA and it arrived in Durban within 48 hours. Battery health is 100% and saved me thousands compared to retail!"</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-slate-800">
+                        <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">KN</div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">Kagiso Naidoo</h4>
+                            <p class="text-[10px] text-slate-400">Durban, KZN</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/60 space-y-4">
+                    <div class="flex text-amber-400 text-sm gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">"My imported US iPhone 13 was carrier locked and useless. Geetech unlocked it permanently via IMEI within 3 hours. Absolute legends!"</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-slate-800">
+                        <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">RV</div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">Ruan van Vuuren</h4>
+                            <p class="text-[10px] text-slate-400">Pretoria, Gauteng</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/60 space-y-4">
+                    <div class="flex text-amber-400 text-sm gap-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">"Fast communication on WhatsApp, secure checkout, and immaculate device condition. Geetech ZA is my go-to apple shop from now on."</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-slate-800">
+                        <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">ZM</div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">Zola Mkhize</h4>
+                            <p class="text-[10px] text-slate-400">Sandton, Johannesburg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Store Location -->
+    <section id="contact" class="py-20 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <div class="space-y-6">
+                    <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Geetech ZA Headquarters</span>
+                    <h2 class="text-3xl font-extrabold text-white">Visit Our Repair & Retail Store</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Drop off your device for instant walk-in unlocking, trade-ins, or pick up your online order directly from our secure tech counter in Gauteng.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                            <div class="w-10 h-10 rounded-lg bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Sandton Tech Center</h4>
+                                <p class="text-xs text-slate-400 mt-1">Rivonia Road & Grayston Drive, Sandton, Johannesburg, 2196</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">WhatsApp & Support Line</h4>
+                                <p class="text-xs text-slate-400 mt-1">+27 (0)11 988 IPHONE / support@geetechza.co.za</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-slate-700/60 shadow-xl">
+                    <h3 class="text-xl font-bold text-white mb-4">Send General Inquiry</h3>
+                    <form onsubmit="handleGeneralInquiry(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Your Name</label>
+                            <input type="text" required class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="e.g., Liam Smith">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
+                            <input type="email" required class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="liam@gmail.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Your Message</label>
+                            <textarea rows="3" required class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="Inquiring about iPhone 16 Pro trade-in values..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold rounded-xl text-sm transition-all shadow-md shadow-blue-600/30">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#05080e] border-t border-slate-800 text-slate-400 text-xs py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+                
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-extrabold">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <span class="text-lg font-extrabold tracking-wider text-white">GEETECH <span class="text-cyan-400">ZA</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
+                        South Africa's trusted premier destination for verified new & pre-owned iPhones and professional IMEI factory unlocking services.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="hover:text-cyan-400 transition-colors">Home</a></li>
+                        <li><a href="#store" onclick="switchTab('store')" class="hover:text-cyan-400 transition-colors">Shop iPhones</a></li>
+                        <li><a href="#unlocking" onclick="switchTab('unlocking')" class="hover:text-cyan-400 transition-colors">Unlocking Services</a></li>
+                        <li><a href="#reviews" class="hover:text-cyan-400 transition-colors">Client Reviews</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#unlocking" class="hover:text-cyan-400 transition-colors">Carrier Unlocks</a></li>
+                        <li><a href="#unlocking" class="hover:text-cyan-400 transition-colors">iCloud Status Check</a></li>
+                        <li><a href="#store" class="hover:text-cyan-400 transition-colors">Grade A+ Pre-Owned</a></li>
+                        <li><a href="#store" class="hover:text-cyan-400 transition-colors">Trade-In Program</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Secure Payments</h4>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-[11px] font-semibold text-slate-300">PayFast</span>
+                        <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-[11px] font-semibold text-slate-300">Instant EFT</span>
+                        <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-[11px] font-semibold text-slate-300">Ozow</span>
+                        <span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-[11px] font-semibold text-slate-300">Visa / Master</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500">
+                <p>&copy; 2026 Geetech ZA. All rights reserved. Authorized Apple Device Specialists.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // iPhone Inventory Database
+        const iphoneProducts = [
+            {
+                id: 1,
+                name: "iPhone 16 Pro Max",
+                model: "iPhone 16",
+                storage: "256GB",
+                grade: "Grade A+ (Pristine)",
+                price: 26999,
+                rating: 4.9,
+                reviews: 54,
+                battery: "100%",
+                badge: "Flagship",
+                description: "Titanium design, A18 Pro chip, 48MP camera system. Factory unlocked for all SA networks."
+            },
+            {
+                id: 2,
+                name: "iPhone 16 Pro",
+                model: "iPhone 16",
+                storage: "128GB",
+                grade: "Brand New Sealed",
+                price: 23499,
+                rating: 5.0,
+                reviews: 29,
+                battery: "100%",
+                badge: "New Release",
+                description: "Brand new sealed retail box with full 1-year Apple international warranty."
+            },
+            {
+                id: 3,
+                name: "iPhone 15 Pro",
+                model: "iPhone 15",
+                storage: "256GB",
+                grade: "Grade A+ (Pristine)",
+                price: 18999,
+                rating: 4.8,
+                reviews: 82,
+                battery: "96%",
+                badge: "Best Value",
+                description: "USB-C enabled titanium build with ProMotion display and lightning-fast A17 Pro."
+            },
+            {
+                id: 4,
+                name: "iPhone 15 Standard",
+                model: "iPhone 15",
+                storage: "128GB",
+                grade: "Grade A (Excellent)",
+                price: 14999,
+                rating: 4.7,
+                reviews: 67,
+                battery: "94%",
+                badge: "Popular",
+                description: "Dynamic Island, 48MP main camera, beautifully crafted color-infused glass back."
+            },
+            {
+                id: 5,
+                name: "iPhone 14 Pro",
+                model: "iPhone 14",
+                storage: "128GB",
+                grade: "Grade A (Excellent)",
+                price: 13999,
+                rating: 4.8,
+                reviews: 112,
+                battery: "91%",
+                badge: "Certified Pre-Owned",
+                description: "Always-On display, Dynamic Island, and 48MP Main camera with professional grade optics."
+            },
+            {
+                id: 6,
+                name: "iPhone 14 Standard",
+                model: "iPhone 14",
+                storage: "128GB",
+                grade: "Grade A (Excellent)",
+                price: 10999,
+                rating: 4.6,
+                reviews: 95,
+                battery: "90%",
+                badge: "Great Deal",
+                description: "Reliable dual-camera system, Crash Detection, and stellar battery performance."
+            },
+            {
+                id: 7,
+                name: "iPhone 13 Pro",
+                model: "iPhone 13",
+                storage: "128GB",
+                grade: "Grade A (Excellent)",
+                price: 9999,
+                rating: 4.9,
+                reviews: 240,
+                battery: "88%",
+                badge: "Top Seller",
+                description: "Pro camera system with Macro photography and 120Hz ProMotion display fluidity."
+            },
+            {
+                id: 8,
+                name: "iPhone 13 Standard",
+                model: "iPhone 13",
+                storage: "128GB",
+                grade: "Grade A- (Very Good)",
+                price: 7999,
+                rating: 4.7,
+                reviews: 310,
+                battery: "87%",
+                badge: "Budget Pick",
+                description: "Incredible performance, cinematic mode, and durable Ceramic Shield front cover."
+            }
+        ];
+
+        let cart = [];
+        let currentModelFilter = 'All';
+
+        // DOM Elements
+        const iphoneGrid = document.getElementById('iphone-grid');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartPanel = document.getElementById('cart-panel');
+        const cartBackdrop = document.getElementById('cart-backdrop');
+        const openCartBtn = document.getElementById('open-cart');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartBadge = document.getElementById('cart-badge');
+        const cartCountHeader = document.getElementById('cart-count-header');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Initialize on Load
+        window.onload = function() {
+            renderStore(currentModelFilter);
+            setupListeners();
+        };
+
+        // Switch Tabs (Store vs Unlocking)
+        function switchTab(tabName) {
+            const storeTab = document.getElementById('tab-store');
+            const unlockingTab = document.getElementById('tab-unlocking');
+            const btnStore = document.getElementById('tab-btn-store');
+            const btnUnlocking = document.getElementById('tab-btn-unlocking');
+
+            if (tabName === 'store') {
+                storeTab.classList.remove('hidden');
+                unlockingTab.classList.add('hidden');
+                btnStore.className = "px-6 py-3 text-sm font-extrabold rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all flex items-center gap-2";
+                btnUnlocking.className = "px-6 py-3 text-sm font-extrabold rounded-xl text-slate-300 hover:text-white transition-all flex items-center gap-2";
+            } else {
+                unlockingTab.classList.remove('hidden');
+                storeTab.classList.add('hidden');
+                btnUnlocking.className = "px-6 py-3 text-sm font-extrabold rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all flex items-center gap-2";
+                btnStore.className = "px-6 py-3 text-sm font-extrabold rounded-xl text-slate-300 hover:text-white transition-all flex items-center gap-2";
+                // Scroll to unlocking section smoothly
+                unlockingTab.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Render Store iPhones
+        function renderStore(model) {
+            currentModelFilter = model;
+
+            // Highlight active button
+            document.querySelectorAll('.model-btn').forEach(btn => {
+                if (btn.id === `btn-model-${model}`) {
+                    btn.className = "model-btn px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition-all shadow-md shadow-blue-600/20";
+                } else {
+                    btn.className = "model-btn px-4 py-2 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all bg-slate-900/60";
+                }
+            });
+
+            const filtered = model === 'All' ? iphoneProducts : iphoneProducts.filter(p => p.model === model);
+
+            iphoneGrid.innerHTML = '';
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "glass-panel rounded-2xl p-5 border border-slate-700/60 flex flex-col justify-between hover:border-cyan-500/50 transition-all duration-300 group shadow-lg";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="px-2.5 py-1 bg-blue-600/15 text-cyan-400 text-[10px] font-bold rounded-md uppercase tracking-wider border border-blue-500/20">${p.badge}</span>
+                            <div class="flex items-center gap-1 text-xs text-amber-400 font-semibold">
+                                <i class="fa-solid fa-star"></i> <span>${p.rating}</span> <span class="text-slate-500">(${p.reviews})</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full h-44 bg-slate-950/80 rounded-xl border border-slate-800 flex items-center justify-center relative overflow-hidden mb-4 group-hover:border-blue-500/30 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:12px_12px] opacity-30"></div>
+                            <i class="fa-brands fa-apple text-cyan-400 text-4xl group-hover:scale-110 transition-transform duration-300"></i>
+                            <div class="absolute bottom-2 left-2 right-2 flex justify-between text-[10px] font-mono text-slate-300 bg-slate-900/90 px-2.5 py-1 rounded border border-slate-700">
+                                <span>${p.storage}</span>
+                                <span class="text-emerald-400">Bat: ${p.battery}</span>
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">${p.name}</h3>
+                        <p class="text-[11px] text-blue-400 font-semibold mt-0.5">${p.grade}</p>
+                        <p class="text-xs text-slate-400 mt-1.5 line-clamp-2">${p.description}</p>
+                    </div>
+
+                    <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-500 block uppercase font-medium">Price ZAR</span>
+                            <span class="text-lg font-extrabold text-cyan-400">R ${p.price.toLocaleString()}</span>
+                        </div>
+                        <button onclick="addToCart('${p.name} (${p.storage})', ${p.price}, 'iPhone Retail')" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl transition-all shadow-md shadow-blue-600/30 flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i> Add
+                        </button>
+                    </div>
+                `;
+                iphoneGrid.appendChild(card);
+            });
+        }
+
+        function filterStore(model) {
+            renderStore(model);
+        }
+
+        // Cart Actions
+        function addToCart(name, price, type) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, type, qty: 1 });
+            }
+            updateCartUI();
+            showToast(`Added "${name}" to your cart!`, 'success');
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+            showToast('Item removed from cart.', 'info');
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (totalCount > 0) {
+                cartBadge.textContent = totalCount;
+                cartBadge.classList.remove('scale-0');
+                cartBadge.classList.add('scale-100');
+            } else {
+                cartBadge.classList.remove('scale-100');
+                cartBadge.classList.add('scale-0');
+            }
+            cartCountHeader.textContent = totalCount;
+            cartSubtotal.textContent = `R ${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-500 space-y-3">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-slate-700"></i>
+                        <p class="text-sm">Your cart or service booking list is empty.</p>
+                    </div>
+                `;
+            } else {
+                cartItemsContainer.innerHTML = '';
+                cart.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between py-4 first:pt-0";
+                    row.innerHTML = `
+                        <div class="pr-2">
+                            <h4 class="text-sm font-bold text-white line-clamp-1">${item.name}</h4>
+                            <p class="text-xs text-slate-400 mt-0.5">R ${item.price.toLocaleString()} × ${item.qty} (${item.type})</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-extrabold text-cyan-400">R ${(item.price * item.qty).toLocaleString()}</span>
+                            <button onclick="removeFromCart('${item.name}')" class="text-slate-500 hover:text-red-400 p-1.5 transition-colors">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+            }
+        }
+
+        function bookService(serviceName, price) {
+            addToCart(serviceName, price, 'Service Booking');
+            toggleCart(true);
+            showToast(`Service "${serviceName}" added to cart! Complete details to confirm.`, 'success');
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty! Add items or select a service first.', 'error');
+                return;
+            }
+            showToast('Redirecting to secure South African payment gateway (PayFast / Ozow)...', 'success');
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                toggleCart(false);
+            }, 2000);
+        }
+
+        // Drawer Controls
+        function toggleCart(open) {
+            if (open) {
+                cartDrawer.classList.remove('hidden');
+                setTimeout(() => {
+                    cartBackdrop.classList.remove('opacity-0');
+                    cartPanel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                cartBackdrop.classList.add('opacity-0');
+                cartPanel.classList.add('translate-x-full');
+                setTimeout(() => cartDrawer.classList.add('hidden'), 300);
+            }
+        }
+
+        function setupListeners() {
+            openCartBtn.addEventListener('click', () => toggleCart(true));
+            closeCartBtn.addEventListener('click', () => toggleCart(false));
+            cartBackdrop.addEventListener('click', () => toggleCart(false));
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+        }
+
+        // Form Handlers
+        function handleUnlockSubmit(e) {
+            e.preventDefault();
+            showToast('Unlock request submitted successfully! We will WhatsApp you the IMEI confirmation & quote.', 'success');
+            e.target.reset();
+        }
+
+        function handleGeneralInquiry(e) {
+            e.preventDefault();
+            showToast('Message sent! Our Sandton tech team will reply within 2 hours.', 'success');
+            e.target.reset();
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgCol = 'bg-slate-900 border-blue-500/50 text-white';
+            let icon = 'fa-circle-check text-cyan-400';
+            
+            if (type === 'error') {
+                bgCol = 'bg-slate-900 border-red-500/50 text-white';
+                icon = 'fa-circle-exclamation text-red-400';
+            }
+
+            toast.className = `glass-panel pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-xl border shadow-xl transition-all transform translate-y-2 opacity-0 ${bgCol}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-lg"></i>
+                <span class="text-xs font-semibold">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
